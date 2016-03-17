@@ -1,0 +1,2 @@
+# ReversiAlgorithm
+リバーシのアルゴリズム
