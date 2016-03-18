@@ -29,7 +29,7 @@ public:
       cout << y << endl;
       cout << "-----------------------------" << endl;
     }
-    cout << "  |a |b |c |d |e |f |g |h |  " << endl;
+    cout << "  |a |b |c |d |e |f |g |h |  " << endl << endl;
   }
 };
 
@@ -38,25 +38,25 @@ int main(){
 
   while(true){
     board.print();
-    cout << "黒石" << board.countDisc(Color::BLACK) << " ";
-    cout << "白石" << board.countDisc(Color::WHITE) << " ";
+    cout << "● 黒石" << board.countDisc(Color::BLACK) << " ";
+    cout << "○ 白石" << board.countDisc(Color::WHITE) << " ";
     cout << "空マス" << board.countDisc(Color::EMPTY) << endl << endl;
     
     if(board.isGameOver()){
       cout << "----------------ゲーム終了---------------" << endl;
 
       if(board.countDisc(Color::BLACK) > board.countDisc(Color::WHITE)){
-        cout << "黒の勝ちです！" << endl;
+        cout << "● 黒の勝ちです！" << endl;
       }
       else if(board.countDisc(Color::BLACK) < board.countDisc(Color::WHITE)){
-        cout << "白の勝ちです！" << endl;
+        cout << "○ 白の勝ちです！" << endl;
       }
       else cout << "引き分けです！" << endl;
       
       return 0;
     }
 
-    cout << (board.getCurrentColor() == Color::BLACK ? "黒の番です。" : "白の番です。") << endl;
+    cout << (board.getCurrentColor() == Color::BLACK ? "● 黒の番です。" : "○ 白の番です。") << endl;
     cout << "手を入力して下さい: ";
 
     string in;

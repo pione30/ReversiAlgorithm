@@ -45,8 +45,8 @@ void Board::init(){
 }
 
 bool Board::move(const Point& point){
-  if(point.x <= 0 || point.x > BOARD_SIZE) return false;
-  if(point.y <= 0 || point.y > BOARD_SIZE) return false;
+  if(point.x < 1 || BOARD_SIZE < point.x) return false;
+  if(point.y < 1 || BOARD_SIZE < point.y) return false;
   if(MovableDir[Turns][point.x][point.y] == Direction::NONE) return false;
 
   flipDiscs(point);
