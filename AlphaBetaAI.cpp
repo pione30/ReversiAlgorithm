@@ -1,4 +1,5 @@
 #include "AI.h"
+#include "Evaluator.h"
 #define FOR(i, a, b) for(int (i) = (a); (i) <= (b); ++(i))
 #define rep(i, n) FOR(i, 0, n - 1)
 #define rep1(i, n) FOR(i, 1, n)
@@ -24,7 +25,8 @@ public:
   void move(Board& board) override;
 
 private:
-  int evaluate(const Board& board);
+  shared_ptr<Evaluator> Eval;
+  // int evaluate(const Board& board);
   void sort(Board& board, vP&, int limit);
   int alphabeta(Board& board, int limit, int alpha, int beta);
 };
@@ -43,13 +45,22 @@ void AlphaBetaAI::move(Board& board){
     board.move(movables[0]);
     return;
   }
- 
+
+  Eval = make_shared<MidEvaluator>();
   // 事前に手を良さそうな順にソート
   sort(board, movables, presearch_depth);
 
   int limit;
   if(MAX_TURNS - board.getTurns() <= wld_depth){
     limit = numeric_limits<int>::max();
+
+    Eval.reset();
+    if(MAX_TURNS - board.getTurns() <= perfect_depth){
+      Eval = make_shared<PerfectEvaluator>();
+    }
+    else{
+      Eval = make_shared<WLDtEvaluator>();
+    }
   }
   else{
     limit = normal_depth;
@@ -97,7 +108,7 @@ void AlphaBetaAI::sort(Board& board, vP& movables, int limit){
 
 int AlphaBetaAI::alphabeta(Board& board, int limit, int alpha, int beta){
   // 深さ制限に達したら評価値を返す
-  if(board.isGameOver() || limit == 0) return evaluate(board);
+  if(board.isGameOver() || limit == 0) return Eval->evaluate(board);
 
   int score;
   const vP movables = board.getMovablePos();
