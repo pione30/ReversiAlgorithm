@@ -96,7 +96,8 @@ void AlphaBetaAI::sort(Board& board, vP& movables, int limit){
 }
 
 int AlphaBetaAI::alphabeta(Board& board, int limit, int alpha, int beta){
-  if(board.isGameOver() || limit == 0) evaluate(board);
+  // 深さ制限に達したら評価値を返す
+  if(board.isGameOver() || limit == 0) return evaluate(board);
 
   int score;
   const vP movables = board.getMovablePos();
