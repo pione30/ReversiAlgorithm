@@ -17,9 +17,6 @@ using vvD = vector<vD>;
 using vvvi = vector<vvi>;
 using vvvu = vector<vvu>;
 
-constexpr static array<int, 8> dx = {0, -1, -1, -1, 0, 1, 1, 1};
-constexpr static array<int, 8> dy = {-1, -1, 0, 1, 1, 1, 0, -1};
-
 class Board{
 public:
   Board();
@@ -36,6 +33,7 @@ public:
   vD getUpdate() const;                  // 直前の手で返された石が並んだvectorを返す
   Color getCurrentColor() const;         // 現在の手番の色を返す
   unsigned getTurns() const;             // 現在の手数を返す
+  int getLiberty(const Point& p) const;  // 指定した座標の開放度を得る
 
 private:
   enum Direction : unsigned {
@@ -50,6 +48,9 @@ private:
     UPPER_RIGHT = 1 << 7
   };
 
+  constexpr static array<int, 8> dx = {0, -1, -1, -1, 0, 1, 1, 1};
+  constexpr static array<int, 8> dy = {-1, -1, 0, 1, 1, 1, 0, -1};
+
   unsigned Turns;
   Color CurrentColor;
   ColorStorage<unsigned> Discs;
@@ -63,8 +64,11 @@ private:
   vP MovablePos[MAX_TURNS + 1];
   vvvu MovableDir;
 
+  vvi Liberty;
+
   // pointで指定された位置に石を打ち、挟み込めるすべての石を裏返す。
   // 「打った石」と「裏返した石」をUpdateLogに挿入する。
+  // Libertyを更新する。
   void flipDiscs(const Point& point);
 
   // diskで指定された座標にdisc.colorの色の石を打てるかどうか、また

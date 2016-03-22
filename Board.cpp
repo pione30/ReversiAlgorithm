@@ -11,6 +11,7 @@ Board::Board(){ init(); }
 void Board::init(){
   RawBoard.resize(BOARD_SIZE + 2, vC(BOARD_SIZE + 2));
   MovableDir.resize(MAX_TURNS + 1, vvu(BOARD_SIZE + 2, vu(BOARD_SIZE + 2)));
+  Liberty.resize(BOARD_SIZE + 2, vi(BOARD_SIZE + 2));
 
   rep1(x, BOARD_SIZE) rep1(y, BOARD_SIZE){
     RawBoard[x][y] = EMPTY;
@@ -96,6 +97,9 @@ bool Board::undo(){
       RawBoard[update[i].x][update[i].y] = i == 0 ? EMPTY : (Color) -CurrentColor;
     }
 
+    // 開放度を元に戻す
+    rep(k, 8) Liberty[update[0].x + dx[k]][update[0].y + dy[k]]++;
+
     // 石数の更新
     unsigned discdiff = S;
     Discs[CurrentColor] -= discdiff;
@@ -145,10 +149,14 @@ Color Board::getCurrentColor() const { return CurrentColor; }
 
 unsigned Board::getTurns() const { return Turns; }
 
+int Board::getLiberty(const Point& p) const { return Liberty[p.x][p.y]; }
 
 void Board::flipDiscs(const Point& point){
   // 行った操作を表す石
   Disc operation(point.x, point.y, CurrentColor);
+
+  // 打った石の周囲8マスの開放度を1ずつ減らす
+  rep(k, 8) Liberty[point.x + dx[k]][point.y + dy[k]]--;
 
   unsigned dir = MovableDir[Turns][point.x][point.y];
   vD update;

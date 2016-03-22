@@ -50,4 +50,11 @@ public:
   const T& operator[](Color color) const {
     return data[color + 1];
   }
+
+  ColorStorage& operator+= (const ColorStorage& clrst){
+    for(int i = 0; i < 3; i++){
+      data[i] += clrst.data[i];
+    }
+    return *this;
+  }
 }; 
