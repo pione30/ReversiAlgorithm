@@ -41,16 +41,15 @@ private:
   using EdgeStat = ColorStorage<EdgeParam>;
   using CornerStat = ColorStorage<CornerParam>;
 
-  static constexpr unsigned TABLE_SIZE = 6561; // 3^8
-  static EdgeStat EdgeTable[TABLE_SIZE];
+  static constexpr unsigned TABLE_SIZE = (unsigned)(pow(3, BOARD_SIZE) + 1e-3);
+  static vector<EdgeStat> EdgeTable;
   static bool TableInit;
 
   void generateEdge(vC& edge, unsigned index);
   EdgeParam evalEdge(vC& edge, Color color) const;
   CornerStat evalCorner(const Board&) const;
 
-  static constexpr array<unsigned, 8> idx3digit = 
-    { 2187, 729, 243, 81, 27, 9, 3, 1 };
+  static vu idx3digit; 
   inline unsigned idxTop(const Board&) const;
   inline unsigned idxBottom(const Board&) const;
   inline unsigned idxRight(const Board&) const;

@@ -8,6 +8,15 @@
 bool MidEvaluator::TableInit = false;
 
 MidEvaluator::MidEvaluator(){
+  EdgeTable.resize(TABLE_SIZE);
+
+  if(idx3digit.empty()){
+    idx3digit.resize(BOARD_SIZE);
+    rrep(i, BOARD_SIZE){
+      idx3digit[i] = i == BOARD_SIZE - 1 ? 1 : 3 * idx3digit[i + 1];
+    }
+  }
+
   if(!TableInit){
     // 初回起動時にテーブルを生成
     vC line(BOARD_SIZE);
@@ -93,33 +102,33 @@ MidEvaluator::EdgeParam MidEvaluator::evalEdge(vC& edge, Color color) const {
   EdgeParam edgeparam = { 0, 0, 0, 0 };
 
   // ウィング等のカウント
-  if(edge[0] == Color::EMPTY && edge[7] == Color::EMPTY){
+  if(edge[0] == Color::EMPTY && edge[BOARD_SIZE - 1] == Color::EMPTY){
     unsigned x = 2;
-    while(x <= 5){
+    while(x <= BOARD_SIZE - 3){
       if(edge[x] != color) break;
       x++;
     }
-    if(x == 6){ // 少なくともブロックができている
-      if((edge[1] == color && edge[6] == Color::EMPTY) || 
-         (edge[1] == Color::EMPTY && edge[6] == color) )
+    if(x == BOARD_SIZE - 2){ // 少なくともブロックができている
+      if((edge[1] == color && edge[BOARD_SIZE - 2] == Color::EMPTY) || 
+         (edge[1] == Color::EMPTY && edge[BOARD_SIZE - 2] == color) )
         edgeparam.wing = 1;
-      else if(edge[1] == color && edge[6] == color)
+      else if(edge[1] == color && edge[BOARD_SIZE - 2] == color)
         edgeparam.mountain = 1;
     }
   }
   else { // それ以外の場合に、隅に隣接する位置に置いていたら
     if(edge[1] == color) edgeparam.Cmove++;
-    if(edge[6] == color) edgeparam.Cmove++;
+    if(edge[BOARD_SIZE - 2] == color) edgeparam.Cmove++;
   }
 
   // 確定石のカウント
-  rep(x, 8){
+  rep(x, BOARD_SIZE){
     if(edge[x] != color) break;
     edgeparam.stable++;
   }
   // 右側からの走査も必要
-  if(edgeparam.stable < 8){
-    for(unsigned x = 7; x > 0; x--){
+  if(edgeparam.stable < BOARD_SIZE){
+    for(unsigned x = BOARD_SIZE - 1; x > 0; x--){
       if(edge[x] != color) break;
       edgeparam.stable++;
     }
@@ -136,19 +145,22 @@ MidEvaluator::CornerStat MidEvaluator::evalCorner(const Board& board) const {
   cornerstat[Color::WHITE].corner = 0;
   cornerstat[Color::WHITE].Xmove = 0;
   
-  cornerstat[board.getColor(Point(1, 1))].corner++;
-  cornerstat[board.getColor(Point(1, 8))].corner++;
-  cornerstat[board.getColor(Point(8, 1))].corner++;
-  cornerstat[board.getColor(Point(8, 8))].corner++;
+  cornerstat[board.getColor(Point(         1,          1))].corner++;
+  cornerstat[board.getColor(Point(         1, BOARD_SIZE))].corner++;
+  cornerstat[board.getColor(Point(BOARD_SIZE,          1))].corner++;
+  cornerstat[board.getColor(Point(BOARD_SIZE, BOARD_SIZE))].corner++;
 
   if(board.getColor(Point(1, 1)) == Color::EMPTY)
     cornerstat[board.getColor(Point(2, 2))].Xmove++;
-  if(board.getColor(Point(1, 8)) == Color::EMPTY)
-    cornerstat[board.getColor(Point(2, 7))].Xmove++;
-  if(board.getColor(Point(8, 1)) == Color::EMPTY)
-    cornerstat[board.getColor(Point(7, 2))].Xmove++;
-  if(board.getColor(Point(8, 8)) == Color::EMPTY)
-    cornerstat[board.getColor(Point(7, 7))].Xmove++;
+
+  if(board.getColor(Point(1, BOARD_SIZE)) == Color::EMPTY)
+    cornerstat[board.getColor(Point(2, BOARD_SIZE - 1))].Xmove++;
+
+  if(board.getColor(Point(BOARD_SIZE, 1)) == Color::EMPTY)
+    cornerstat[board.getColor(Point(BOARD_SIZE - 1, 2))].Xmove++;
+
+  if(board.getColor(Point(BOARD_SIZE, BOARD_SIZE)) == Color::EMPTY)
+    cornerstat[board.getColor(Point(BOARD_SIZE - 1, BOARD_SIZE - 1))].Xmove++;
 
   return cornerstat;
 }
@@ -171,7 +183,7 @@ ColorStorage<unsigned> MidEvaluator::countLiberty(const Board& board) const {
 
 unsigned MidEvaluator::idxTop(const Board& board) const {
   unsigned index = 0;
-  rep(i, 8){
+  rep(i, BOARD_SIZE){
     index += idx3digit[i] * (board.getColor(Point(i + 1, 1)) + 1);
   }
   return index;
@@ -179,23 +191,23 @@ unsigned MidEvaluator::idxTop(const Board& board) const {
 
 unsigned MidEvaluator::idxBottom(const Board& board) const {
   unsigned index = 0;
-  rep(i, 8){
-    index += idx3digit[i] * (board.getColor(Point(i + 1, 8)) + 1);
+  rep(i, BOARD_SIZE){
+    index += idx3digit[i] * (board.getColor(Point(i + 1, BOARD_SIZE)) + 1);
   }
   return index;
 }
 
 unsigned MidEvaluator::idxRight(const Board& board) const {
   unsigned index = 0;
-  rep(i, 8){
-    index += idx3digit[i] * (board.getColor(Point(8, i + 1)) + 1);
+  rep(i, BOARD_SIZE){
+    index += idx3digit[i] * (board.getColor(Point(BOARD_SIZE, i + 1)) + 1);
   }
   return index;
 }
 
 unsigned MidEvaluator::idxLeft(const Board& board) const {
   unsigned index = 0;
-  rep(i, 8){
+  rep(i, BOARD_SIZE){
     index += idx3digit[i] * (board.getColor(Point(1, i + 1)) + 1);
   }
   return index;
@@ -203,9 +215,9 @@ unsigned MidEvaluator::idxLeft(const Board& board) const {
 
 unsigned MidEvaluator::idxLine(const vC& l){
   unsigned ret = 0;
-  rep(i, 8){
+  rep(i, BOARD_SIZE){
     ret += l[i] + 1;
-    if(i < 7) ret *= 3;
+    if(i < BOARD_SIZE - 1) ret *= 3;
   }
   return ret;
 }
