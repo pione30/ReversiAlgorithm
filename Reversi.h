@@ -32,6 +32,14 @@ struct Point{
     return oss.str();
   }
 
+  bool operator== (const Point& rhs) const {
+    return x == rhs.x && y == rhs.y;
+  }
+
+  inline bool operator!= (const Point& rhs) const {
+    return !(*this == rhs);
+  }
+
 };
 
 struct Disc : public Point{
