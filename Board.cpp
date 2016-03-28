@@ -8,7 +8,7 @@ void Board::init(){
   Liberty.resize(BOARD_SIZE + 2, vi(BOARD_SIZE + 2));
 
   rep1(x, BOARD_SIZE) rep1(y, BOARD_SIZE){
-    RawBoard[x][y] = EMPTY;
+    RawBoard[x][y] = Color::EMPTY;
   }
 
   rep(y, BOARD_SIZE + 2){
@@ -22,17 +22,17 @@ void Board::init(){
 
   // 初期配置
   constexpr int MID = BOARD_SIZE / 2;
-  RawBoard[MID    ][MID    ] = WHITE;
-  RawBoard[MID + 1][MID + 1] = WHITE;
-  RawBoard[MID    ][MID + 1] = BLACK;
-  RawBoard[MID + 1][MID    ] = BLACK;
+  RawBoard[MID    ][MID    ] = Color::WHITE;
+  RawBoard[MID + 1][MID + 1] = Color::WHITE;
+  RawBoard[MID    ][MID + 1] = Color::BLACK;
+  RawBoard[MID + 1][MID    ] = Color::BLACK;
 
-  Discs[BLACK] = 2;
-  Discs[WHITE] = 2;
-  Discs[EMPTY] = BOARD_SIZE * BOARD_SIZE - 4;
+  Discs[Color::BLACK] = 2;
+  Discs[Color::WHITE] = 2;
+  Discs[Color::EMPTY] = BOARD_SIZE * BOARD_SIZE - 4;
 
   Turns = 0;
-  CurrentColor = BLACK;
+  CurrentColor = Color::BLACK;
 
   UpdateLog.clear();
 
@@ -98,7 +98,7 @@ bool Board::undo(){
     unsigned discdiff = S;
     Discs[CurrentColor] -= discdiff;
     Discs[(Color) -CurrentColor] += discdiff - 1;
-    Discs[Color::EMPTY]--;
+    Discs[Color::EMPTY]++;
   }
 
   UpdateLog.pop_back();
