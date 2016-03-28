@@ -28,6 +28,7 @@ public:
   bool isGameOver() const;               // ゲームが終了しているかどうかを判定する
 
   unsigned countDisc(Color color) const; // 指定された石の個数を返す
+  vP getHistory() const;                 // これまでに打たれてきた手を並べたvectorを返す
   Color getColor(const Point& p) const;  // 指定した座標の石の色を調べる
   const vP& getMovablePos() const;       // 石を打てる座標が並んだvectorを返す
   vD getUpdate() const;                  // 直前の手で返された石が並んだvectorを返す

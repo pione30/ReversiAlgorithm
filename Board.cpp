@@ -132,6 +132,14 @@ unsigned Board::countDisc(Color color) const {
   return Discs[color]; 
 }
 
+vP Board::getHistory() const {
+  vP history;
+  for(const auto& update : UpdateLog){
+    if(!update.empty()) history.emplace_back(update[0]);
+  }
+  return history;
+}
+
 Color Board::getColor(const Point& p) const {
   return RawBoard[p.x][p.y];
 }
