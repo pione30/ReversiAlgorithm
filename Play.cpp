@@ -148,6 +148,6 @@ int main(int argc, char* argv[]){
     }
   
     // プレイヤーの交代
-    current_player = ++current_player % 2;
+    current_player++; current_player %= 2;
   }
 }
