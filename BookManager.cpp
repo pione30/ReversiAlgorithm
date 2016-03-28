@@ -4,7 +4,7 @@
 static const string BOOK_FILE_NAME = "reversi.book";
 
 BookManager::BookManager() : Root(nullptr) {
-  Root = make_shared<Node>;
+  Root = make_shared<Node>();
   Root->point = Point("f5");
 
   ifstream ifs(BOOK_FILE_NAME);
@@ -17,7 +17,7 @@ BookManager::BookManager() : Root(nullptr) {
     for(int i = 0; i < L; i += 2){
       Point p;
       try{
-        p = Point(line.substr[i]);
+        p = Point(line.substr(i));
       }
       catch(invalid_argument& e){ break; }
 
@@ -78,7 +78,7 @@ void BookManager::add(const vP& book){
 
     if(node->child == nullptr){
       // 新しい定石手
-      node->child = make_shared<Node>;
+      node->child = make_shared<Node>();
       node = node->child;
       node->point.x = p.x;
       node->point.y = p.y;
@@ -92,7 +92,7 @@ void BookManager::add(const vP& book){
 
         // 定石木の新しい枝
         if(node->sibling == nullptr){
-          node->sibling = make_shared<Node>;
+          node->sibling = make_shared<Node>();
           node = node->sibling;
           node->point.x = p.x;
           node->point.y = p.y;
@@ -112,6 +112,6 @@ Point BookManager::getNextMove(const shared_ptr<Node>& node) const {
     candidates.emplace_back(p->point);
   }
 
-  unsigned index = std::rand() % candidates.size();
+  unsigned index = dist(engine) % candidates.size();
   return candidates[index];
 }

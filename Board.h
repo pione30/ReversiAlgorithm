@@ -1,21 +1,5 @@
 #pragma once
-#include <bits/stdc++.h>
 #include "Reversi.h"
-constexpr int BOARD_SIZE = 8;
-constexpr int MAX_TURNS = BOARD_SIZE * BOARD_SIZE - 4;
-using namespace std;
-using vi = vector<int>;
-using vu = vector<unsigned>;
-using vC = vector<Color>;
-using vP = vector<Point>;
-using vD = vector<Disc>;
-using vvi = vector<vi>;
-using vvu = vector<vu>;
-using vvC = vector<vC>;
-using vvP = vector<vP>;
-using vvD = vector<vD>;
-using vvvi = vector<vvi>;
-using vvvu = vector<vvu>;
 
 class Board{
 public:

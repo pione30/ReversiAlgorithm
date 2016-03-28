@@ -1,6 +1,17 @@
 #pragma once
 #include <bits/stdc++.h>
+#define FOR(i, a, b) for(int (i) = (a); (i) <= (b); ++(i))
+#define rep(i, n) FOR(i, 0, n - 1)
+#define rep1(i, n) FOR(i, 1, n)
+#define rrep(i, n) for(int (i) = (n) - 1; (i) >= 0; --(i))
+#define all(a) (a).begin(),(a).end()
+constexpr int BOARD_SIZE = 8;
+constexpr int MAX_TURNS = BOARD_SIZE * BOARD_SIZE - 4;
 using namespace std;
+
+random_device rdev;     // 真の乱数生成器
+mt19937 engine(rdev()); // ランダムなシードを設定する
+uniform_int_distribution<> dist(0, 100);
 
 enum Color{
   EMPTY = 0,
@@ -65,4 +76,17 @@ public:
     }
     return *this;
   }
-}; 
+};
+
+using vi = vector<int>;
+using vu = vector<unsigned>;
+using vC = vector<Color>;
+using vP = vector<Point>;
+using vD = vector<Disc>;
+using vvi = vector<vi>;
+using vvu = vector<vu>;
+using vvC = vector<vC>;
+using vvP = vector<vP>;
+using vvD = vector<vD>;
+using vvvi = vector<vvi>;
+using vvvu = vector<vvu>;
