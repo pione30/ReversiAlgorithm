@@ -9,10 +9,6 @@ constexpr int BOARD_SIZE = 8;
 constexpr int MAX_TURNS = BOARD_SIZE * BOARD_SIZE - 4;
 using namespace std;
 
-random_device rdev;     // 真の乱数生成器
-mt19937 engine(rdev()); // ランダムなシードを設定する
-uniform_int_distribution<> dist(0, 100);
-
 enum Color{
   EMPTY = 0,
   WHITE = -1,

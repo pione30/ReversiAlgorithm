@@ -33,8 +33,8 @@ private:
     UPPER_RIGHT = 1 << 7
   };
 
-  constexpr static array<int, 8> dx = {0, -1, -1, -1, 0, 1, 1, 1};
-  constexpr static array<int, 8> dy = {-1, -1, 0, 1, 1, 1, 0, -1};
+  static array<int, 8> dx;
+  static array<int, 8> dy;
 
   unsigned Turns;
   Color CurrentColor;

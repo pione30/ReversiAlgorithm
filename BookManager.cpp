@@ -1,4 +1,8 @@
 #include "BookManager.h"
+#include "CoordinatesTransformer.h"
+
+std::random_device rdev;     // 真の乱数生成器
+std::mt19937 engine(rdev()); // ランダムなシードを設定する 
 
 // 定石手が記載されたテキストファイル
 static const string BOOK_FILE_NAME = "reversi.book";
@@ -111,7 +115,8 @@ Point BookManager::getNextMove(const shared_ptr<Node>& node) const {
   for(auto p = node->child; p != nullptr; p = p->sibling){
     candidates.emplace_back(p->point);
   }
-
-  unsigned index = dist(engine) % candidates.size();
+  
+  uniform_int_distribution<int> dist(0, 100);
+  int index = dist(engine) % candidates.size();
   return candidates[index];
 }

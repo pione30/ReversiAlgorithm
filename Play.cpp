@@ -1,5 +1,6 @@
 #include "Board.h"
 #include "AI.h"
+#include "AlphaBetaAI.h"
 
 class Player{
 public:
@@ -31,6 +32,11 @@ public:
       try{ p = Point(in); }
       catch(invalid_argument& e){
         cout << "正しい形式で入力して下さい！" << endl;
+        continue;
+      }
+      
+      if(!board.move(p)){
+        cout << "そこには置けません！" << endl;
         continue;
       }
 

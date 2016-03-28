@@ -1,34 +1,8 @@
-#include "AI.h"
-#include "Evaluator.h"
-
-struct Move : public Point {
-  int eval;
-  Move() : eval(0) {}
-  Move(int _x, int _y, int _eval) : Point(_x, _y), eval(_eval) {}
-};
-
-struct MoveGreater{
-  bool operator() (const Move& lhs, const Move& rhs){
-    return (lhs.eval > rhs.eval);
-  }
-};
-
-
-class AlphaBetaAI : public AI {
-public:
-  AlphaBetaAI();
-  void move(Board& board) override;
-
-private:
-  shared_ptr<Evaluator> Eval;
-  // int evaluate(const Board& board);
-  void sort(Board& board, vP&, int limit);
-  int alphabeta(Board& board, int limit, int alpha, int beta);
-};
-
+#include "AlphaBetaAI.h"
 
 void AlphaBetaAI::move(Board& board){
-  vP movables = board.getMovablePos();
+  BookManager book;
+  vP movables = book.find(board);
 
   if(movables.empty()){
     board.pass();
@@ -54,7 +28,7 @@ void AlphaBetaAI::move(Board& board){
       Eval = make_shared<PerfectEvaluator>();
     }
     else{
-      Eval = make_shared<WLDtEvaluator>();
+      Eval = make_shared<WLDEvaluator>();
     }
   }
   else{

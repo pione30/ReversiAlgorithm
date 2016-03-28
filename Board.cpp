@@ -153,6 +153,10 @@ unsigned Board::getTurns() const { return Turns; }
 
 int Board::getLiberty(const Point& p) const { return Liberty[p.x][p.y]; }
 
+
+array<int, 8> Board::dx = {0, -1, -1, -1, 0, 1, 1, 1};
+array<int, 8> Board::dy = {-1, -1, 0, 1, 1, 1, 0, -1};
+
 void Board::flipDiscs(const Point& point){
   // 行った操作を表す石
   Disc operation(point.x, point.y, CurrentColor);

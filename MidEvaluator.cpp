@@ -1,10 +1,11 @@
 #include "MidEvaluator.h"
 
 bool MidEvaluator::TableInit = false;
+vector<MidEvaluator::EdgeStat> MidEvaluator::EdgeTable;
+vu MidEvaluator::idx3digit;
 
 MidEvaluator::MidEvaluator(){
-  EdgeTable.resize(TABLE_SIZE);
-
+  if(EdgeTable.empty()) EdgeTable.resize(TABLE_SIZE);
   if(idx3digit.empty()){
     idx3digit.resize(BOARD_SIZE);
     rrep(i, BOARD_SIZE){
