@@ -52,7 +52,7 @@ class AIPlayer : public Player {
 
 public:
   AIPlayer() : Ai(nullptr){
-    Ai.reset(new AlphaBetaAI());
+    Ai = make_unique<AlphaBetaAI>();
   }
 
   void onTurn(Board& board) override {
@@ -108,12 +108,12 @@ int main(int argc, char* argv[]){
   }
 
   if(!reverse){
-    player[0].reset(new HumanPlayer());
-    player[1].reset(new AIPlayer());
+    player[0] = make_unique<HumanPlayer>();
+    player[1] = make_unique<AIPlayer>();
   }
   else {
-    player[1].reset(new HumanPlayer());
-    player[0].reset(new AIPlayer());
+    player[1] = make_unique<HumanPlayer>();
+    player[0] = make_unique<AIPlayer>();
   }
 
   while(true){
