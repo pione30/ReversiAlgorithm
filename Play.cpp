@@ -100,14 +100,21 @@ int main(int argc, char* argv[]){
   unique_ptr<Player> player[2];
   int current_player = 0;
   ConsoleBoard board;
+  bool AImatch = false;
   bool reverse = false;
 
   if(argc > 1){
+    // コマンドラインプション-Aが与えられるとAI同士の対戦にする
+    if(strcmp(argv[1], "-A") == 0) AImatch = true;
     // コマンドラインプション-rが与えられるとコンピュータ先手にする
     if(strcmp(argv[1], "-r") == 0) reverse = true;
   }
 
-  if(!reverse){
+  if(AImatch){
+    player[0] = make_unique<AIPlayer>();
+    player[1] = make_unique<AIPlayer>();
+  }
+  else if(!reverse){
     player[0] = make_unique<HumanPlayer>();
     player[1] = make_unique<AIPlayer>();
   }
