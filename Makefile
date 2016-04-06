@@ -11,7 +11,7 @@ SRCS = \
 
 # 定義済みマクロの再定義
 CXX = g++
-CXXFLAGS = -std=c++11 -O2 -Wall
+CXXFLAGS = -std=c++14 -O2 -Wall
 
 # オブジェクトファイルは.cppを.oに置換したもの
 OBJS = $(SRCS:.cpp=.o)
