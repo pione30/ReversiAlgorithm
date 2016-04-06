@@ -23,7 +23,7 @@ public:
   void move(Board& board) override;
 
 private:
-  shared_ptr<Evaluator> Eval;
+  unique_ptr<Evaluator> Eval;
   // int evaluate(const Board& board);
   void sort(Board& board, vP&, int limit);
   int alphabeta(Board& board, int limit, int alpha, int beta);

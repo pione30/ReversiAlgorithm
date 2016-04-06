@@ -15,7 +15,7 @@ void AlphaBetaAI::move(Board& board){
     return;
   }
 
-  Eval = make_shared<MidEvaluator>();
+  Eval = make_unique<MidEvaluator>();
   // 事前に手を良さそうな順にソート
   sort(board, movables, presearch_depth);
 
@@ -25,10 +25,10 @@ void AlphaBetaAI::move(Board& board){
 
     Eval.reset();
     if(MAX_TURNS - board.getTurns() <= perfect_depth){
-      Eval = make_shared<PerfectEvaluator>();
+      Eval = make_unique<PerfectEvaluator>();
     }
     else{
-      Eval = make_shared<WLDEvaluator>();
+      Eval = make_unique<WLDEvaluator>();
     }
   }
   else{
